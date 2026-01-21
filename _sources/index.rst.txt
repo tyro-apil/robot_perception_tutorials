@@ -10,6 +10,7 @@
    :hidden:
 
    getting_started
+   camera_calibration
    camera_interfacing
 
 Introduction

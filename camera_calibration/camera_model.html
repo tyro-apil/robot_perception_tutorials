@@ -1,0 +1,226 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Camera Model &mdash; Robot Perception Tutorials 2.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=51b770b3"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Monocular Camera Calibration" href="rgb_cam_calib.html" />
+    <link rel="prev" title="Camera Calibration" href="../camera_calibration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Robot Perception Tutorials
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/setup.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/mathematics_refresher.html">Mathematics Refresher</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../camera_calibration.html">Camera Calibration</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Camera Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgb_cam_calib.html">Monocular Camera Calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../camera_interfacing.html">Camera Interfacing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../camera_interfacing/oak_camera.html">OpenCV AI Kit (OAK) Camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../camera_interfacing/oak_camera/setup.html">Basic Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../camera_interfacing/oak_camera/workflow.html">API Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../camera_interfacing/oak_camera/pipeline_view.html">Pipeline Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../camera_interfacing/oak_camera/stereo_modes.html">Stereo-Depth Modes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../camera_interfacing/pi_camera.html">Pi-Camera</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Robot Perception Tutorials</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../camera_calibration.html">Camera Calibration</a></li>
+      <li class="breadcrumb-item active">Camera Model</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/tyro-apil/camera_tutorials/blob/main/source/camera_calibration/camera_model.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="camera-model">
+<h1>Camera Model<a class="headerlink" href="#camera-model" title="Link to this heading"></a></h1>
+<section id="pinhole-camera-model">
+<h2>Pinhole Camera Model<a class="headerlink" href="#pinhole-camera-model" title="Link to this heading"></a></h2>
+<img alt="../_images/pinhole_intuition.png" src="../_images/pinhole_intuition.png" />
+<p><em>Fig: Pinhole Camera Model Intuition</em> – Source: <a class="reference external" href="https://en.wikipedia.org/wiki/Pinhole_camera_model#/media/File:Pinhole-camera.svg">Wikipedia_Pinhole_Model</a></p>
+<img alt="../_images/pinhole_camera.png" src="../_images/pinhole_camera.png" />
+<p><em>Fig: Pinhole Camera Model Intuition</em> – Source: <a class="reference external" href="https://docs.nvidia.com/vpi/appendix_pinhole_camera.html">Nvidia_Docs</a></p>
+<section id="coordinate-system">
+<h3>Coordinate System<a class="headerlink" href="#coordinate-system" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>X<sub>w</sub>, Y<sub>w</sub>, Z<sub>w</sub> : World Coordinate Frame (Reference Frame)</p></li>
+<li><p>X<sub>c</sub>, Y<sub>c</sub>, Z<sub>c</sub> : Camera Coordinate Frame</p></li>
+<li><p>u, v : Pixel Coordinate Frame</p></li>
+</ol>
+<section id="world-frame-convention">
+<h4>World Frame (Convention)<a class="headerlink" href="#world-frame-convention" title="Link to this heading"></a></h4>
+<p>Generally, it would be a <strong>robot’s base_link</strong> or  a <strong>map frame</strong></p>
+<ol class="arabic simple">
+<li><p>X<sub>w</sub>: Front</p></li>
+<li><p>Y<sub>c</sub>: Left</p></li>
+<li><p>Z<sub>c</sub>: Up</p></li>
+</ol>
+</section>
+<section id="camera-frame-convention">
+<h4>Camera Frame (Convention)<a class="headerlink" href="#camera-frame-convention" title="Link to this heading"></a></h4>
+<p>If camera lens is facing opposite to me, then:</p>
+<ol class="arabic simple">
+<li><p>Centre of lens: Origin</p></li>
+<li><p>X<sub>c</sub>: Left -&gt; Right</p></li>
+<li><p>Y<sub>c</sub>: Top -&gt; Bottom</p></li>
+<li><p>Z<sub>c</sub>: Into the Plane</p></li>
+</ol>
+</section>
+<section id="pixel-frame-convention">
+<h4>Pixel Frame (Convention)<a class="headerlink" href="#pixel-frame-convention" title="Link to this heading"></a></h4>
+<p>If camera lens is facing opposite to me, then:</p>
+<ol class="arabic simple">
+<li><p>Top-left of the frame: Origin</p></li>
+<li><p>u: Left -&gt; Right</p></li>
+<li><p>v: Top -&gt; Bottom</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="forward-projection">
+<h2>Forward Projection<a class="headerlink" href="#forward-projection" title="Link to this heading"></a></h2>
+<p>To <strong>get the pixel coordinates</strong> from the world coordinates</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{s} = \mathbf{K} \cdot [\mathbf{R} \mid \mathbf{t}] \cdot \mathbf{X}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{s} = \lambda \begin{bmatrix} u \\ v \\ 1 \end{bmatrix}\)</span> (Homogeneous image coordinates)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{K} = \begin{bmatrix} f_x &amp; 0 &amp; c_x \\ 0 &amp; f_y &amp; c_y \\ 0 &amp; 0 &amp; 1 \end{bmatrix}\)</span> (Intrinsic matrix: Camera -&gt; Pixel Coordinates)</p></li>
+<li><p><span class="math notranslate nohighlight">\([\mathbf{R} \mid \mathbf{t}] = \begin{bmatrix} r_{11} &amp; r_{12} &amp; r_{13} &amp; t_1 \\ r_{21} &amp; r_{22} &amp; r_{23} &amp; t_2 \\ r_{31} &amp; r_{32} &amp; r_{33} &amp; t_3 \end{bmatrix}\)</span> (Extrinsic matrix: World -&gt; Camera Coordinates)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{X} = \begin{bmatrix} X \\ Y \\ Z \\ 1 \end{bmatrix}\)</span> (Homogeneous world coordinates)</p></li>
+</ul>
+<section id="role-of-each-factor">
+<h3>Role of each factor<a class="headerlink" href="#role-of-each-factor" title="Link to this heading"></a></h3>
+<section id="extrinsic-matrix-mathbf-r-3x3-mid-mathbf-t-3x1">
+<h4>Extrinsic Matrix – <span class="math notranslate nohighlight">\([\mathbf{R}_{3x3} \mid \mathbf{t}_{3x1}]\)</span><a class="headerlink" href="#extrinsic-matrix-mathbf-r-3x3-mid-mathbf-t-3x1" title="Link to this heading"></a></h4>
+<p>The three columns of rotation matrix <span class="math notranslate nohighlight">\(\mathbf{R}\)</span><sub>3x3</sub> represent the three basis vectors of camera frame with respect to world frame.
+The translation vector <span class="math notranslate nohighlight">\(\mathbf{t}\)</span><sub>3x1</sub> represents the translation of camera frame with respect to world frame</p>
+</section>
+<section id="intrinsic-matrix-mathbf-k-3x3">
+<h4>Intrinsic Matrix – <span class="math notranslate nohighlight">\(\mathbf{K}_{3x3}\)</span><a class="headerlink" href="#intrinsic-matrix-mathbf-k-3x3" title="Link to this heading"></a></h4>
+<p>f<sub>x</sub> and f<sub>y</sub> are in diagonal position and convert units from <strong>meters</strong> to <strong>pixels</strong>.
+During manufacturing, the sensor may not be square, so there’s need of different values of f<sub>x</sub> and f<sub>y</sub>.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{f_x} = \frac{\text{focal length in mm}}{\text{pixel size in mm per pixel (x axis)}}\]</div>
+<p>c<sub>x</sub> and c<sub>y</sub> are the offsets in X &amp; Y axis of the optical centre, where optical axis cuts the focal plane,
+with respect to pixel coordinate frame. Ideally, the optical centre should be at the geometrical centre of the focal plane,
+but due to errors in manufacturing, the axis may not pass exactly through centre in most cases but is quite near to the centre.</p>
+</section>
+</section>
+</section>
+<section id="backward-projection">
+<h2>Backward Projection<a class="headerlink" href="#backward-projection" title="Link to this heading"></a></h2>
+<p>To get <strong>world coordinates</strong> from pixel coordinates. In most real world scenarios,
+this is what we want to do instead of forward projection. During image formation,
+we project 3D scene to a 2D plane thus losing information of a dimension. So for backward projection
+, we need to have information about the lost dimension i.e. <strong>depth value of each image coordinate</strong>
+to get a unique solution (<strong>single world coordinate</strong>) using pixel coordinates.</p>
+<p>For such use case, we use <a class="reference internal" href="../getting_started.html#id1"><span class="std std-ref">depth cameras</span></a> that provides Z<sub>c</sub> i.e. z-coordinate
+w.r.t. camera frame.</p>
+</section>
+<section id="distortion">
+<h2>Distortion<a class="headerlink" href="#distortion" title="Link to this heading"></a></h2>
+<p>Due to spherical structure of lens, the image clicked from camera suffers from
+unwanted distortions such that we donot obtain perfectly rectangular image as seen
+by our eyes. Such distortion can be omitted by calibrating the camera.</p>
+<img alt="../_images/distortion_viz.png" src="../_images/distortion_viz.png" />
+<p><em>Fig: Common types of distortions in image</em> – Source: <a class="reference external" href="https://media.geeksforgeeks.org/wp-content/uploads/20230428155936/Distortion.webp">GFG_Distortion_Examples</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../camera_calibration.html" class="btn btn-neutral float-left" title="Camera Calibration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rgb_cam_calib.html" class="btn btn-neutral float-right" title="Monocular Camera Calibration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2025, Robotics Club, Pulchowk Campus.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

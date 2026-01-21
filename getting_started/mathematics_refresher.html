@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Setup &mdash; Robot Perception Tutorials 2.0.0 documentation</title>
+  <title>Mathematics Refresher &mdash; Robot Perception Tutorials 2.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -22,8 +22,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Mathematics Refresher" href="mathematics_refresher.html" />
-    <link rel="prev" title="Getting Started" href="../getting_started.html" /> 
+    <link rel="next" title="Camera Calibration" href="../camera_calibration.html" />
+    <link rel="prev" title="Setup" href="setup.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,8 +48,8 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../getting_started.html">Getting Started</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mathematics_refresher.html">Mathematics Refresher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Mathematics Refresher</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../camera_calibration.html">Camera Calibration</a><ul>
@@ -85,9 +85,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../getting_started.html">Getting Started</a></li>
-      <li class="breadcrumb-item active">Setup</li>
+      <li class="breadcrumb-item active">Mathematics Refresher</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/tyro-apil/camera_tutorials/blob/main/source/getting_started/setup.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/tyro-apil/camera_tutorials/blob/main/source/getting_started/mathematics_refresher.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -95,50 +95,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="setup">
-<h1>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h1>
-<section id="opencv-installation">
-<h2>OpenCV installation<a class="headerlink" href="#opencv-installation" title="Link to this heading"></a></h2>
-<p>We will be installing OpenCV package in Python.
-For using OpenCV with C++, see <a class="reference external" href="https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html">OpenCV Linux Install</a> and <a class="reference external" href="https://docs.opencv.org/master/db/df5/tutorial_linux_gcc_cmake.html">OpenCV with gcc and CMake</a>.
-There are 4 different opencv packages.</p>
-<p>For desktop environments (GUI support):</p>
-<ol class="arabic simple">
-<li><dl class="simple">
-<dt>opencv-python</dt><dd><p>main modules package</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>opencv-contrib-python</dt><dd><p>main + extra modules (<a class="reference external" href="https://docs.opencv.org/master/">OpenCV Docs</a>)</p>
-</dd>
-</dl>
-</li>
-</ol>
-<p>For server setups (no GUI):</p>
-<ol class="arabic simple">
-<li><p>opencv-python-headless</p></li>
-<li><p>opencv-contrib-python-headless</p></li>
-</ol>
-<p>The most preferred version is <strong>opencv-python</strong> but if you need extra modules install the <strong>opencv-contrib-python</strong> package.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a virtual environment</span>
-python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
-
-<span class="c1"># Activate environment (In Linux)</span>
-<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
-
-<span class="c1"># Install OpenCV package (It has numpy as dependency so numpy will be installed automatically.)</span>
-pip3<span class="w"> </span>install<span class="w"> </span>opencv-python
-</pre></div>
-</div>
-</section>
-<section id="matlab">
-<h2>MATLAB<a class="headerlink" href="#matlab" title="Link to this heading"></a></h2>
-<p>Recommended toolbox:</p>
-<ol class="arabic simple">
-<li><p><a class="reference external" href="https://www.mathworks.com/products/image-processing.html">MATLAB Image Processing Toolbox</a></p></li>
-<li><p><a class="reference external" href="https://www.mathworks.com/products/computer-vision.html">MATLAB Computer Vision Toolbox</a></p></li>
-</ol>
+  <section id="mathematics-refresher">
+<h1>Mathematics Refresher<a class="headerlink" href="#mathematics-refresher" title="Link to this heading"></a></h1>
+<section id="coordinate-transformation">
+<h2>Coordinate transformation<a class="headerlink" href="#coordinate-transformation" title="Link to this heading"></a></h2>
+<p>Matrix as means of reference-frame and coordinate transformation.</p>
 </section>
 </section>
 
@@ -146,8 +107,8 @@ pip3<span class="w"> </span>install<span class="w"> </span>opencv-python
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="mathematics_refresher.html" class="btn btn-neutral float-right" title="Mathematics Refresher" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="setup.html" class="btn btn-neutral float-left" title="Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../camera_calibration.html" class="btn btn-neutral float-right" title="Camera Calibration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
