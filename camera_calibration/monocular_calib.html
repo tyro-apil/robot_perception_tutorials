@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monocular Camera Calibration &mdash; Robot Perception Tutorials 2.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=51b770b3"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Camera Interfacing" href="../camera_interfacing.html" />
+    <link rel="prev" title="Camera Model" href="camera_model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Robot Perception Tutorials
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/setup.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/mathematics_refresher.html">Mathematics Refresher</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../camera_calibration.html">Camera Calibration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="camera_model.html">Camera Model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Monocular Camera Calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../camera_interfacing.html">Camera Interfacing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../camera_interfacing/oak_camera.html">OpenCV AI Kit (OAK) Camera</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../camera_interfacing/oak_camera/setup.html">Basic Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../camera_interfacing/oak_camera/workflow.html">API Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../camera_interfacing/oak_camera/pipeline_view.html">Pipeline Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../camera_interfacing/oak_camera/stereo_modes.html">Stereo-Depth Modes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../camera_interfacing/pi_camera.html">Pi-Camera</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Robot Perception Tutorials</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../camera_calibration.html">Camera Calibration</a></li>
+      <li class="breadcrumb-item active">Monocular Camera Calibration</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/tyro-apil/camera_tutorials/blob/main/source/camera_calibration/monocular_calib.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="monocular-camera-calibration">
+<h1>Monocular Camera Calibration<a class="headerlink" href="#monocular-camera-calibration" title="Link to this heading"></a></h1>
+<nav class="contents local" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#calibration-patterns" id="id1">Calibration Patterns</a></p>
+<ul>
+<li><p><a class="reference internal" href="#chessboard" id="id2">1. Chessboard</a></p></li>
+<li><p><a class="reference internal" href="#symmetric-circles" id="id3">2. Symmetric Circles</a></p></li>
+<li><p><a class="reference internal" href="#asymmetric-circles" id="id4">3. Asymmetric Circles</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#data-preparation" id="id5">Data Preparation</a></p></li>
+<li><p><a class="reference internal" href="#calibration-steps" id="id6">Calibration Steps</a></p></li>
+<li><p><a class="reference internal" href="#code-reference" id="id7">Code Reference</a></p></li>
+</ul>
+</nav>
+<p>We will be using <a class="reference external" href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr98-71.pdf">Zhang’s Method</a> for camera calibration which uses known planar objects for
+estimating camera parameters (f<sub>x</sub>, f<sub>y</sub>, c<sub>x</sub>, c<sub>y</sub>) and
+distortion coefficients (Default 5 parameters – k<sub>1</sub>, k<sub>2</sub>, p<sub>1</sub>, p<sub>2</sub>, k<sub>3</sub>:
+k<sub>x</sub> is for radial distortion and p<sub>x</sub> is for tangential distortion).
+We will be using <strong>OpenCV</strong> so that we could use pre-built library functions. You can follow along
+using the provided GitHub repository in the <strong>Code Reference</strong> section at the end.</p>
+<img alt="../_images/calibration_patterns.png" src="../_images/calibration_patterns.png" />
+<p><em>Fig: Commonly Used Calibration Patterns</em> – Source: <a class="reference external" href="https://docs.3divi.ai/face_sdk/development/legacy_api/dev_camera_calibration/">3DiVi Docs</a></p>
+<section id="calibration-patterns">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Calibration Patterns</a><a class="headerlink" href="#calibration-patterns" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Make sure the pattern is completely flat. If you are using glue to paste
+the pattern on a flat object, make sure there is no any bubbles after pasting.</p>
+</div>
+<section id="chessboard">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">1. Chessboard</a><a class="headerlink" href="#chessboard" title="Link to this heading"></a></h3>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><em>width</em>: total number of <strong>inner corners</strong> in X-axis</p></li>
+<li><p><em>height</em>: total number of <strong>inner corners</strong> in Y-axis</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>For chessboard pattern, it is recommended to choose <strong>odd and even</strong> combination for height and width
+so that orientation detection is robust. Visually, you can verify that by finding
+<strong>2 black and 2 white squares</strong> as the corners of the whole pattern.</p>
+<p>Recommended size: (9, 6)</p>
+</div>
+</section>
+<section id="symmetric-circles">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">2. Symmetric Circles</a><a class="headerlink" href="#symmetric-circles" title="Link to this heading"></a></h3>
+<p>Parameters:</p>
+<ul class="simple">
+<li><p><em>width</em>: total number of <strong>circular blobs</strong> in X-axis</p></li>
+<li><p><em>height</em>: total number of <strong>circular blobs</strong> in Y-axis</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>For symmetric circles, it is recommended to choose <strong>odd and odd</strong> combination for height and width
+so that center circle identification becomes easier.</p>
+<p>Recommended size: (7, 7)</p>
+</div>
+</section>
+<section id="asymmetric-circles">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">3. Asymmetric Circles</a><a class="headerlink" href="#asymmetric-circles" title="Link to this heading"></a></h3>
+<p>It if often recommended pattern because of its orientation robustness due to asymmetricity.</p>
+<p>Parameters (columns x rows):</p>
+<ul class="simple">
+<li><p><em>columns</em>: total number of <strong>columns</strong> in each row</p></li>
+<li><p><em>rows</em>: total number of <strong>hoirzontal rows</strong></p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>For asymmetric circles, <strong>no restrictions</strong> but recommended <strong>even and odd</strong> pattern.</p>
+<p>Recommended size: (4, 11)</p>
+</div>
+</section>
+</section>
+<section id="data-preparation">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Data Preparation</a><a class="headerlink" href="#data-preparation" title="Link to this heading"></a></h2>
+<p>Click about 10-20 images of the pattern in different orientations making sure
+images do not have same viewpoint. Also, make sure to have whole pattern in the image
+without any clipping at the edges.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Rename the clicked images like img_00, img_01, … in a sequence and store in a directory.
+Since, it would be easier to remove bad images later on which give high error.</p>
+</div>
+</section>
+<section id="calibration-steps">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Calibration Steps</a><a class="headerlink" href="#calibration-steps" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Define pattern size and required parameter values of printed pattern.</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">CHECKERBOARD_DIM</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">CHECKERBOARD_SQUARE_SIZE</span> <span class="o">=</span> <span class="mi">20</span> <span class="c1">## In mm</span>
+</pre></div>
+</div>
+<img alt="../_images/chessboard_pattern.jpg" src="../_images/chessboard_pattern.jpg" />
+<p><em>Fig: Chessboard pattern being used</em></p>
+</div></blockquote>
+</li>
+</ol>
+<p>2. Create two lists <strong>obj_points</strong> and <strong>img_points</strong> to store the real-world
+3D coordinates and corresponding pixel coordinates respectively.</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating vector to store vectors of 3D points for each checkerboard image</span>
+<span class="n">objpoints</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Creating vector to store vectors of 2D points for each checkerboard image</span>
+<span class="n">imgpoints</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1">## Defining the world coordinates for 3D points</span>
+<span class="c1">## X: left-&gt;right, Y: top-&gt;bottom, Z: out-of-the plane (can be obtained by X x Y)</span>
+
+<span class="c1">## Assuming one square as one unit</span>
+<span class="c1">## (0,0,0), (1,0,0), ..., (6,0,0), (0,1,0), (1,1,0), ..., (6,1,0), ...</span>
+<span class="n">objp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">CHECKERBOARD_DIM</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">CHECKERBOARD_DIM</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">objp</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">CHECKERBOARD_DIM</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">:</span><span class="n">CHECKERBOARD_DIM</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic" start="3">
+<li><p>Populating <strong>img_points</strong> from the images.</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">## Criteria for subpixel accuracy like 1.2 px</span>
+<span class="n">criteria</span> <span class="o">=</span> <span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_EPS</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_MAX_ITER</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="c1">#BGR format</span>
+    <span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+    <span class="c1"># Find the chess board corners</span>
+    <span class="c1"># If desired number of corners are found in the image then ret = true</span>
+    <span class="n">ret</span><span class="p">,</span> <span class="n">corners</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findChessboardCorners</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">CHECKERBOARD_DIM</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CALIB_CB_ADAPTIVE_THRESH</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CALIB_CB_FAST_CHECK</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CALIB_CB_NORMALIZE_IMAGE</span><span class="p">)</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If desired number of corner are detected,</span>
+<span class="sd">    we refine the pixel coordinates and display</span>
+<span class="sd">    them on the images of checker board</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+        <span class="n">objpoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">objp</span><span class="p">)</span>
+        <span class="c1"># refining pixel coordinates for given 2d points.</span>
+        <span class="n">corners2</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cornerSubPix</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">11</span><span class="p">),(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">criteria</span><span class="p">)</span>
+
+        <span class="n">imgpoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">corners2</span><span class="p">)</span>
+
+        <span class="c1"># Draw and display the corners</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">drawChessboardCorners</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">CHECKERBOARD_DIM</span><span class="p">,</span> <span class="n">corners2</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Calibrate the camera</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Performing camera calibration by</span>
+<span class="sd">passing the value of known 3D points (objpoints)</span>
+<span class="sd">and corresponding pixel coordinates of the</span>
+<span class="sd">detected corners (imgpoints)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">ret</span><span class="p">,</span> <span class="n">mtx</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">rvecs</span><span class="p">,</span> <span class="n">tvecs</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calibrateCamera</span><span class="p">(</span><span class="n">objpoints</span><span class="p">,</span> <span class="n">imgpoints</span><span class="p">,</span> <span class="n">gray</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="c1"># tvecs obtained have units based on size of square i.e. 1 = 1 chess square</span>
+<span class="n">scaled_tvecs</span> <span class="o">=</span> <span class="p">[</span><span class="n">tvec</span> <span class="o">*</span> <span class="n">CHECKERBOARD_SQUARE_SIZE</span> <span class="k">for</span> <span class="n">tvec</span> <span class="ow">in</span> <span class="n">tvecs</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ol class="arabic simple">
+<li><p><strong>Camera matrix (mtx)</strong>: Intrinsic parameters depend upon image size i.e. this camera matrix works for given image height and weight say <strong>h</strong> and <strong>w</strong>. If you use this for different height and width say <strong>h2</strong> and <strong>w2</strong> but with same aspect ratio, you can just scale i.e. <span class="math notranslate nohighlight">\(f_{x\_new} = \frac{f_x * h_2}{h}\)</span>, … and so on. But, if aspect ratios are different, then <strong>calibrate with new images of same aspect ratio</strong>.</p></li>
+<li><p><strong>Distortion coefficients (dist)</strong>: These are unaffected by image size or aspect ratio.</p></li>
+<li><p><strong>Rodrigues vectors (rvecs) and Translation vectors (tvecs)</strong>:  rvecs and tvecs are the poses of camera (6 DoF) with respect to individual images used for calibration unlike camera matrix (which is only one and same for all images). <strong>rvec is unaffected</strong> by using length of one chessboard square as unit length but <strong>tvec is affected</strong>, so tvec must be scaled. rvec is concise way to represent rotation with a 3D vector whose direction represents axis of rotation and magnitude represents the angle (in radians) by which coordinate frame will be rotated.</p></li>
+</ol>
+</div>
+</div></blockquote>
+</li>
+<li><p>Optimize the camera matrix and get Region of Interest (ROI)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>new camera mtx – Optimized intrinsic matrix designed to map the 3D coordinates to the 2D plane of the undistorted image</p></li>
+<li><p>roi – largest inner rectangle within the undistorted image that contains ONLY valid (non-black) pixels.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ALPHA</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Range: [0,1]</span>
+<span class="c1">## If alpha=1, all pixels are retained with some extra black pixels</span>
+<span class="c1">## If alpha=0, image with only valid pixels i.e. black borders are gone but some original edge pixels might be lost</span>
+
+<span class="n">newcameramtx</span><span class="p">,</span> <span class="n">roi</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getOptimalNewCameraMatrix</span><span class="p">(</span><span class="n">mtx</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">),</span> <span class="n">ALPHA</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;New camera matrix: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">newcameramtx</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Region of Interest: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">roi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<p>6. Observe reprojection errors and recalibrate in errors are high by removing
+the images that are producing large errors compared to others.</p>
+<blockquote>
+<div><p><strong>Reprojection error</strong> – Euclidean distance between detected pixel coordinate of corner and projected pixel coordinate of corner. Projected pixel coordinate
+obtained by forward projection i.e. multiplying by Projection matrix (i.e. Extrinsic and intrinsic parameters)</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<ol class="arabic simple">
+<li><p>If good calibration, reprojection error &lt; 0.1 px (best) or 0.2 px(tolerable).</p></li>
+<li><p>See the individual and mean error, and remove the outlier images from calibration pipeline and recalibrate.</p></li>
+</ol>
+</div>
+<img alt="../_images/reprojection_errors.png" src="../_images/reprojection_errors.png" />
+<p><em>Fig: Reprojection Error of each image</em></p>
+<p>In the shown example graph, it would be better if we <strong>remove img_08 and img_09</strong> and
+recalibrate from the start.</p>
+</div></blockquote>
+</section>
+<section id="code-reference">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Code Reference</a><a class="headerlink" href="#code-reference" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/Robotics-Club-Pulchowk/camera_calibration/blob/main/calibrate.ipynb">Camera Calibration Notebook - Github</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="camera_model.html" class="btn btn-neutral float-left" title="Camera Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../camera_interfacing.html" class="btn btn-neutral float-right" title="Camera Interfacing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2025, Robotics Club, Pulchowk Campus.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
