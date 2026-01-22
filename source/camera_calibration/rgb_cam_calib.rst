@@ -1,3 +1,0 @@
-Monocular Camera Calibration
-================================
-
