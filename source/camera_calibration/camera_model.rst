@@ -24,8 +24,8 @@ World Frame (Convention)
 Generally, it would be a **robot’s base_link** or  a **map frame**
 
 1. X\ :sub:`w`: Front
-2. Y\ :sub:`c`: Left
-3. Z\ :sub:`c`: Up
+2. Y\ :sub:`w`: Left
+3. Z\ :sub:`w`: Up
 
 Camera Frame (Convention)
 """""""""""""""""""""""""
