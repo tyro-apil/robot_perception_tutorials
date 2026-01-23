@@ -126,7 +126,7 @@ Calibration Steps
             ret, corners = cv2.findChessboardCorners(gray, CHECKERBOARD_DIM, cv2.CALIB_CB_ADAPTIVE_THRESH + cv2.CALIB_CB_FAST_CHECK + cv2.CALIB_CB_NORMALIZE_IMAGE)
             
             """
-            If desired number of corner are detected,
+            If desired number of corners are detected,
             we refine the pixel coordinates and display 
             them on the images of checker board
             """
@@ -147,8 +147,7 @@ Calibration Steps
         """
         Performing camera calibration by 
         passing the value of known 3D points (objpoints)
-        and corresponding pixel coordinates of the 
-        detected corners (imgpoints)
+        and corresponding pixel coordinates (imgpoints)
         """
         ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
 
@@ -181,7 +180,7 @@ Calibration Steps
 6. Observe reprojection errors and recalibrate in errors are high by removing
 the images that are producing large errors compared to others.
 
-    **Reprojection error** -- Euclidean distance between detected pixel coordinate of corner and projected pixel coordinate of corner. Projected pixel coordinate
+    **Reprojection error** -- Euclidean distance between detected pixel coordinate and projected pixel coordinate. Projected pixel coordinate
     obtained by forward projection i.e. multiplying by Projection matrix (i.e. Extrinsic and intrinsic parameters)
 
     .. attention::
