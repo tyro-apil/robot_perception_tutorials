@@ -232,7 +232,7 @@ Since, it would be easier to remove bad images later on which give high error.</
     <span class="n">ret</span><span class="p">,</span> <span class="n">corners</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findChessboardCorners</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">CHECKERBOARD_DIM</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CALIB_CB_ADAPTIVE_THRESH</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CALIB_CB_FAST_CHECK</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CALIB_CB_NORMALIZE_IMAGE</span><span class="p">)</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    If desired number of corner are detected,</span>
+<span class="sd">    If desired number of corners are detected,</span>
 <span class="sd">    we refine the pixel coordinates and display</span>
 <span class="sd">    them on the images of checker board</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -254,8 +254,7 @@ Since, it would be easier to remove bad images later on which give high error.</
 <div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Performing camera calibration by</span>
 <span class="sd">passing the value of known 3D points (objpoints)</span>
-<span class="sd">and corresponding pixel coordinates of the</span>
-<span class="sd">detected corners (imgpoints)</span>
+<span class="sd">and corresponding pixel coordinates (imgpoints)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">ret</span><span class="p">,</span> <span class="n">mtx</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">rvecs</span><span class="p">,</span> <span class="n">tvecs</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calibrateCamera</span><span class="p">(</span><span class="n">objpoints</span><span class="p">,</span> <span class="n">imgpoints</span><span class="p">,</span> <span class="n">gray</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
@@ -297,7 +296,7 @@ Since, it would be easier to remove bad images later on which give high error.</
 <p>6. Observe reprojection errors and recalibrate in errors are high by removing
 the images that are producing large errors compared to others.</p>
 <blockquote>
-<div><p><strong>Reprojection error</strong> – Euclidean distance between detected pixel coordinate of corner and projected pixel coordinate of corner. Projected pixel coordinate
+<div><p><strong>Reprojection error</strong> – Euclidean distance between detected pixel coordinate and projected pixel coordinate. Projected pixel coordinate
 obtained by forward projection i.e. multiplying by Projection matrix (i.e. Extrinsic and intrinsic parameters)</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
